@@ -1,0 +1,40 @@
+.d-md-flex {
+    display: flex !important;
+  }
+
+  .progress-bar {
+    height: auto;
+    border-radius: 0.25rem;
+  }
+  
+  .progress {
+    overflow: visible;
+  }
+  .progress {
+    display: flex;
+    height: 8px;
+    overflow: hidden;
+    font-size: 0.75rem;
+    background-color: #e9ecef;
+    border-radius: 0.5rem;
+  }
+  
+  .progress-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #5e72e4;
+    transition: width 0.6s ease;
+  }
+  .table td .progress {
+    height: 3px;
+    width: 120px;
+    margin: 0;
+  }
+  .bg-gradient-info {
+    background-image: linear-gradient(310deg, #1171ef 0%, #11cdef 100%);
+  }
