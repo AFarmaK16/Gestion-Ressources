@@ -28,29 +28,85 @@ session_start();
   <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="../assets/lib/jquery/jquery.min.js"></script>
-  <style>
-     #output{
-    width: 500px;
-    /* position: absolute; */
-    background:gray;
-    border-radius: 10px;
-     /* position: relative; */
-    /*top: 50%;
-    left: 50%;
-    bottom: 50%;
-    right: 50%;*/
-    /* transform: translate(-50%, -50%); */
-    /* z-index: 9999; */
-    /* padding-left: 10px; */
-    /* text-align: center; */
-      visibility:visible;
-      color:white;
-      margin-top:auto;
-      margin-left:auto;
-      margin-right:auto;
-      margin-bottom:auto;
+<style type="text/css">
+.ed:hover {
+  color: purple;
+}
+ #output{
+    
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  border: 1px solid black;
+  border-radius: 10px;
+  z-index: 10;
+  padding: 0;
+  background-color:#212529;
+  width: 500px;
+  max-width: 80%;
     }
-  </style>
+    #output.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+</style>
+<script type="text/javascript">
+
+function closeFunction(){
+  // document.getElementById('output').classList.remove('active');
+  
+    }
+  //**********************UPDATE COMPTE
+  function Update(tab) {
+      //  $.ajax({
+      //             type:'POST',
+      //             url:'updateC.php',
+      //             data:{
+      //               name:tab,
+      //             },
+      //             success:function(data){
+      //               $('#output').html(data);
+      //               $('#output').style.display = "block";
+      //               // alert('there');
+      //             }
+      //           }); 
+       // alert(tab);
+       var tabArray=tab.split("*");
+      //  alert(tabArray);
+       document.getElementById('nom').value=tabArray[0];
+       document.getElementById('prenom').value=tabArray[1];
+       document.getElementById('email').value=tabArray[2];
+       document.getElementById('myLogin').value=tabArray[3];
+       document.getElementById('table').value=tabArray[4];
+       document.getElementById('firstId').value=tabArray[3];
+
+      const output= document.getElementById('output');
+      // output.style.visibility="visible";
+      output.classList.add('active');
+      //  document.getElementById('output').style.height="100";
+      //  document.getElementById('output').style.width="100";
+      //  document.getElementById('output').style.position= "absolute";
+
+
+
+  }
+  //**********************DELETE COMPTE 
+  function Del(tab) {
+     $.ajax({
+                type:'POST',
+                url:'deleteC.php',
+                data:{
+                  name:tab,
+                },
+                success:function(data){
+                  $('#output').html(data);
+                  $('#output').style.display = "block";
+                  // alert('there');
+                }
+              }); 
+  }
+</script>
 
 </head>
 <body class="dark-edition">
@@ -122,113 +178,7 @@ session_start();
     </div>
   </div>
 
-<!-- **********************LOGIN FORM******************** -->
 <?php
-    function form(){
-?>
-    <div id="contact">
-      <div class="container" id="g">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-<?php 
-              if(isset($_GET['dec'])){
-                echo "<div class='alert alert-success' role='alert'>".$_GET['dec']."</div>";
-              } 
-              if(isset($_GET['erreur'])){
-                echo "<div class='alert alert-danger' role='alert'>".$_GET['erreur']." </div>";
-              }
-              if(isset($_GET['change'])){
-                echo "<div class='alert alert-success' role='alert'>".$_GET['change']." </div>";
-              }
-              if (isset($_GET['err'])) {
-                echo "<div class='alert alert-danger' role='alert'>Vous devez d'abord vous connecte </div>";
-              }          
-?>
-</div>
-          <div style="margin-top:20%; margin-left: 10%;">
-              <div class="content">
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-md-10">
-<!--card  -->
-                        <div class="logo" style='text-align:center'><a href="../index.php">
-                            <img src="../assets/img/logoESP.jpg"  class=" logo-tim">
-                            </a><br><h4 style='color:white;'></h4></div>
-                      <div class="card">
-                            <div class="card-header card-header-primary">
-                                  <h4 class="card-title">Login Form</h4>
-                                  <p class="card-category">Complete your profile</p>
-                                </div>
-                              <div class='card-body'>
-                                <form  method="POST" id="myform">
-                                  <div class="form-group">
-                                  <label class="bmd-label-floating">Login:</label><input type="text" name="login" class="form-control" id="myLog" placeholder="Your Login">
-                                    <span id="myerror"></span><br>
-                                  </div>
-                                  <div class="form-group">
-                                  <label class="bmd-label-floating">Password:</label><input type="password" name="mdp" class="form-control rounded-right"  id="mdp" placeholder="Your password"> 
-                                    <span id="mdperror"></span><br>              
-                                  </div>
-                                  <div class="form-send">
-                                  <button type="submit" id='hide' class="btn btn-primary pull-right">Connexion</button>
-                                  </div>
-                                </form>   
-<!-- end card -->
-                </div>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript">
-        var myform = document.getElementById('myform');
-        myform.addEventListener('submit',function (e) {
-         var myLog =document.getElementById('myLog');
-         var myerror  =document.getElementById('myerror');
-         var myMdp =document.getElementById('mdp');
-         var mdperror  =document.getElementById('mdperror');
-         if(myLog.value.trim()==""){
-          myerror.innerHTML ="*Champs login obligatoire";
-          myerror.style.color="red";
-          e.preventDefault();
-        }
-        if(myMdp.value.trim()==""){
-          mdperror.innerHTML ="*Champs login obligatoire";
-          mdperror.style.color="red";
-          e.preventDefault();
-        }
-
-        });
-
-        </script>
-
-  <!--/G -->
-
-  <!--  ********** CTA SECTION ********** -->
-  
-  <!--/CTA -->
-
-
-
-<?php }
-                function VerifierIdentite($login,$password)
-                {
-                  include '../Connexion.php';
-                  require_once "../function.php";
-                   
-                  $req="Select * from etudiant where  idEt ='".$login."' and Password= sha1('".$password."')";
-                  $tab=mysqli_fetch_all(Insertion($con,$req),MYSQLI_ASSOC);
-                  if (!empty($tab))
-                  {
-                    $_SESSION['login']=$login;
-                       AfficherForm();                      
-                  }
-                  else{
-                    $erreur="Login ou Password incorrect";
-                     header("Location:index.php?erreur=$erreur");
-                  }
-                }
     function AfficherForm(){
 ?>
     <div class="wrapper ">
@@ -248,42 +198,42 @@ session_start();
               <i class="material-icons">person</i>
 <?php  
               include '../Connexion.php';      
-              $reqq="Select * from etudiant where  idEt='".$_SESSION['login']."'";
+              $reqq="Select * from Admin where  idAdmin='".$_SESSION['login']."'";
               $tab=mysqli_fetch_all(mysqli_query($con,$reqq),MYSQLI_ASSOC);
               foreach ($tab as $ligne){
-                $nom=$ligne['NomEt'];
-               $prenom=$ligne['PrenomEt'];
+                $nom=$ligne['idAdmin'];
              }
-            echo "<p>$prenom $nom</p>";
+            echo "<p>$nom</p>";
 ?>
             </a>
           </li>
-          <li class="nav-item active  ">
-            <a class="nav-link" href="./index.html">
+          <li class="nav-item   ">
+            <a class="nav-link" href="#">
               <i class="material-icons">dashboard</i>
               <p>Acceuil</p>
             </a>
           </li>
           
           <li class="nav-item ">
-            <a class="nav-link" href="./tables.html">
+            <a class="nav-link" href="./addCompte.php">
               <i class="material-icons">content_paste</i>
-              <p>Too</p>
+              <p>Creer Compte</p>
+            </a>
+          </li> 
+          <li class="nav-item  active">
+            <a class="nav-link" href="gestCompte.php">
+              <i class="material-icons">library_books</i>
+              <p>Comptes</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="../Deconnexion/MedDisconnect.php">
-              <i class="material-icons">library_books</i>
+            <a class="nav-link" href="../Deconnexion/AdminDisconnect.php">
+              <i class="material-icons"></i>
               <p>Se deconnecter</p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="./icons.html">
-              <i class="material-icons">bubble_chart</i>
-              <p>Icons</p>
-            </a>
-          </li>
-          <li class="nav-item ">
+         
+          <!-- <li class="nav-item ">
             <a class="nav-link" href="./map.html">
               <i class="material-icons">location_ons</i>
               <p>Maps</p>
@@ -294,7 +244,7 @@ session_start();
               <i class="material-icons">notifications</i>
               <p>Notifications</p>
             </a>
-          </li>
+          </li> -->
           <!-- <li class="nav-item active-pro ">
                 <a class="nav-link" href="./upgrade.html">
                     <i class="material-icons">unarchive</i>
@@ -309,7 +259,7 @@ session_start();
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+            <a class="navbar-brand" href="javascript:void(0)"></a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
             <span class="sr-only">Toggle navigation</span>
@@ -318,25 +268,16 @@ session_start();
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
-            <form class="navbar-form">
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-default btn-round btn-just-icon">
-                  <i class="material-icons">search</i>
-                  <div class="ripple-container"></div>
-                </button>
-              </div>
-            </form>
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)">
-                  <i class="material-icons">dashboard</i>
-                  <p class="d-lg-none d-md-block">
+                  <!-- <i class="material-icons">dashboard</i> -->
+                  <!-- <p class="d-lg-none d-md-block">
                     Stats
-                  </p>
+                  </p> -->
                 </a>
               </li>
-              <li class="nav-item dropdown">
+              <!-- <li class="nav-item dropdown">
                 <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="material-icons">notifications</i>
                   <span class="notification">5</span>
@@ -351,73 +292,144 @@ session_start();
                   <a class="dropdown-item" href="javascript:void(0)">Another Notification</a>
                   <a class="dropdown-item" href="javascript:void(0)">Another One</a>
                 </div>
-              </li>
-              <li class="nav-item">
+              </li> -->
+              <!-- <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)">
                   <i class="material-icons">person</i>
                   <p class="d-lg-none d-md-block">
                     Account
                   </p>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
       </nav>
       <!-- End Navbar -->
-<div id="g">
-
-
-    <div class="container">
-     
-        <object data="../img/svg/hello_re_3evm.svg" width="300" height="300" > </object>
 <?php
-           // AFFICHER EDT
-        include '../Connexion.php';
 
-        $reqCons="SELECT  * FROM EDT e,cours c,Etudiant  et where et.idEt ='".$_SESSION['login']."' and et.Classe=e.classe and e.id_Cours=c.idCours order by jour";
-          $tab=mysqli_fetch_all(Insertion($con,$reqCons),MYSQLI_ASSOC);
-          $nbVis=count($tab);
-          $chaine="<div class='card-body table-responsive'>
-            <table class='table table-condensed table-hover' style='margin-top: 50px;'>
-              <form name='form'><tr><thead class='text-warning'><th>Jour</th><th>Cours</th><th>Salle</th><th>HeureDebut</th><th>HeureFin</th></thead></tr>";
-           foreach($tab as $ligne){
-            $salle=$ligne['salle'];
-            $HeureDebt=$ligne['HeureDebut'];
-            $HeureFin=$ligne['HeureFin'];
-            $Jour=$ligne['JOUR'];
-            $cours=$ligne['libelle'];
-            $chaine=$chaine."<tr><td>$Jour</td><td>$cours</td><td>$salle</td><td>$HeureDebt</td><td>$HeureFin</td>
-                  </tr>";
-           }
-          //  ******AFFICHE EDT**************
-           $chaine=$chaine."</table></div>";
+          function AffichCompte($table,$pre){
+                    include '../Connexion.php';
+                    // include "../function.php";
 
-     
-        
+            $reqCons="SELECT  * FROM $table order by email ";
+            $tab=mysqli_fetch_all(mysqli_query($con,$reqCons),MYSQLI_ASSOC);
+            $chaine="<div class='card-body table-responsive'>
+              <table class='table table-condensed table-hover' style='margin-top: 50px;'>
+                <form name='form'><tr><thead class='text-warning'><th>Nom</th><th>Prenom</th><th>Login</th><th>Email</th><th>---</th></thead></tr>";
+                $i=0;
+             foreach($tab as $ligne){
+              $nom=$ligne['Nom'.$pre];
+              $prenom=$ligne['Prenom'.$pre];
+              $login=$ligne['id'.$pre];
+              $email=$ligne['email'];
+              $del='Del("'.$table.'*'.$login.'")';
+              $send=$nom."*".$prenom."*".$email."*".$login."*".$table;
+              $update='Update("'.$send.'")';
+              $i++;
+              $chaine=$chaine."<tr><td>$nom</td><td>$prenom</td><td>$login</td><td>$email</td>
+                      <td>
+                      <i class='material-icons ed' onclick='$update' style=' cursor: pointer;' id='c$i'>edit</i>
+                      <i class='material-icons ed'onclick='$del' style=' cursor: pointer;' id='c$i'>delete</i>
+                      </td></tr>";
+             }
+            //  ******AFFICHE EDT**************
+             $chaine=$chaine."</table></div>";
+             return $chaine;
+          }
+
+
+// AFFICHAGE DETAILS COMPTES
+      
               echo "
-                      <br>
-                      <br>
                       <div class='card'>
                             <div class='card-header card-header-primary'>
-                              <h4 class='card-title'>Emploi du temps</h4>
-                            </div>
-                            $chaine
+                              <h4 class='card-title'>Comptes Professeurs</h4>
+                            </div>".
+                           AffichCompte('Professeur','Prof')."
+                      </div>
+                      <div class='card' style='margin-top: 100px;'>
+                            <div class='card-header card-header-tabs card-header-warning '>
+                              <h4 class='card-title'>Comptes Etudiants</h4>
+                            </div>".
+                            AffichCompte('Etudiant','Et')."
+                      </div>
+                      <div class='card' style='margin-top: 100px;'>
+                            <div class='card-header card-header-tabs card-header-success '>
+                              <h4 class='card-title'>Comptes Surveillants</h4>
+                            </div>".
+                            AffichCompte('Surveillant','Su')."
                       </div>
                   ";
-        
+                echo"<br><br><br>";
+
+                echo"<div id='output'>
+                <p class='card-category' id='retour'></p>
+                <div id='card'>
+                      <div class='content '>
+                      <div class='container-fluid' id='mycontent'>
+                        <div class='row'>
+                          <div class='col-md-10'>
+                            <div>
+                              <div class='float-end mt-8'>
+                                <button class='btn btn-link text-dark p-0 fixed-plugin-close-button '>
+                                  <i class='fa fa-close' id='close' onclick='closeFunction();'  style='color:red'></i>
+                                </button> 
+                              </div>
+                            </div>
+                            <div class='card'>
+                              <div class='card-header card-header-primary'>
+                                <h4 class='card-title'>Mettre a jour compte</h4>
+                              </div>
+                                  <div class='card-body'>
+                                    <form  method='POST' id='myform' action='deleteC.php'>
+                                      <div class='form-group'>
+                                          <label class='bmd-label-floating'>Nom:</label>
+                                          <input class='form-control' type='text' name='nom' id='nom' >
+                                      </div>
+                                      <div class='form-group'>
+                                          <label class='bmd-label-floating'>Prenom:</label>
+                                          <input class='form-control' type='text' name='prenom'  id='prenom'>
+                                          <input  type='hidden' name='table'  id='table' >
+                                          <input  type='hidden' name='firstId'  id='firstId' >
+                                      </div>
+                                      <div class='form-group'>
+                                          <label class='bmd-label-floating'>Login:</label>
+                                          <input class='form-control' type='text' name='login'  id='myLogin' value='doid'>
+                                      <span id='error'></span>
+                                      </div>
+                                      <div class='form-group'>
+                                          <label class='bmd-label-floating'>Password:</label>
+                                          <input class='form-control rounded-right ' type='password ' name='mdp'>
+                                      </div>
+                                       <div class='form-group'>
+                                          <label class='bmd-label-floating'>Email:</label>
+                                          <input class='form-control' type='text' name='email' id='email' >
+                                      </div>
+                                      <div class='form-send'>
+                                      <button type='submit' id='hide' class='btn btn-primary pull-right'>Connexion</button>
+                                      </div>
+                                    </form>
+                                  </div>  
+                              </div> 
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </div>";
+       
 ?>
 
 <?php }
-    if(!isset($_POST['login'])){
-      form();
-    }
-    else{
-      $login=$_POST['login'];
-      $mdp=$_POST['mdp'];
-       VerifierIdentite($login,$mdp);
-      // AfficherForm();
-    }
+ if(!isset($_SESSION['login']))
+ {
+  header("Location:index.php");
+ }
+ else
+ {
+   Afficherform();
+ }
 ?>
 
   
@@ -616,32 +628,89 @@ session_start();
 
     });
   </script> -->
-  <script>
-    // *********POINTAGE**************
-  function CheckedOn(id,done) {
-    //****************DISABLE CLICK IF ALREADY DONE */
-        if(done==1){
-          alert('here');
-          // return;
-        }
-    //****************DISABLE CLICK IF ALREADY DONE */
-        else{
-          $.ajax({
-                type:'POST',
-                url:'CoursToP.php',
-                data:{
-                  name:id,
-                },
-                success:function(data){
-                  $('#output').html(data);
-                  $('#output').style.display = "block";
-                  // alert('there');
-                }
-              }); 
-        }   
-      }
-// *********POINTAGE**************
-  </script>
+  <?php
+
+function Insertion($con,$req)
+{
+    if (mysqli_query($con,$req)) {
+      $success= "Modification effectuee avec succes ";?>
+      <script>
+        alert('leep diam');
+        // output.classList.add('active');
+        // output.value="leep diam";
+        // document.getElementById('retour').innerHTML ="Utilisateur ajoute dans la base";
+        // document.getElementById('retour').style.color="blue";
+      </script>
+      <?php
+      // echo "$success <br>";
+      //  header("Location:addCompte.php?success=$success");
+     }
+    else 
+    {
+      $erreur="Echec de l'insertion veuillez remplir correctement les champs";?>
+       <script>
+        // document.getElementById('retour').innerHTML ="Echec de l'insertion veuillez remplir correctement les champs";
+        // document.getElementById('retour').style.color="red";
+        alert('hummm');
+      </script>
+   <?php 
+    // echo "$erreur <br>";
+    // header("Location:addCompte.php?erreur=$erreur");
+   }
+}
+  
+  function TreatUpdate(){
+    include "../Connexion.php";
+    // $recuperer= explode("*", $_POST['name']);
+    //    $tab=$recuperer[0];
+    //    $id=$recuperer[1];
+
+    $nom=$_REQUEST['nom'];
+    $prenom=$_REQUEST['prenom'];    
+    $login=$_REQUEST['login'];
+    $mdp=$_REQUEST['mdp'];
+    $email=$_REQUEST['email'];
+    $table=$_REQUEST['table'];
+    $firstId=$_REQUEST['firstId'];
+    if ($table=="Professeur") {
+      $idC='idProf';
+      $pre="Prof";
+    }
+    else if("Etudiant"){
+      $idC='idEt';
+      $pre="Et";
+    }
+    else{
+      $idC='idSu';
+      $pre="Su";
+    }
+    // $req="UPDATE $table SET 
+    // nom'".$pre."=$nom,
+    // prenom$pre=$prenom,
+    // $idC=$login,
+    // email=$email,
+    // password=sha1('".$mdp."')
+    //   Where $idC=$login
+    // ";
+    $req="UPDATE $table SET 
+   id$pre='".$login."',
+   nom$pre='".$nom."',
+   prenom$pre='".$prenom."',
+   password=sha1('".$mdp."'),
+    email='".$email."'
+      Where $idC='".$firstId."'
+    ";
+    Insertion($con,$req);
+  }
+
+    if (isset($_REQUEST['nom'])) {
+      TreatUpdate();
+    }
+    // else{
+    //   print_r($_REQUEST['nom']);
+    // }
+  ?>
+
 </body>
 
 </html>

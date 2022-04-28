@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3308
--- Généré le :  mer. 27 avr. 2022 à 16:32
+-- Généré le :  jeu. 28 avr. 2022 à 21:49
 -- Version du serveur :  8.0.18
 -- Version de PHP :  7.3.12
 
@@ -120,6 +120,7 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
   `PrenomEt` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `email` varchar(30) NOT NULL,
+  `Classe` varchar(30) NOT NULL,
   PRIMARY KEY (`idEt`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -127,10 +128,10 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
 -- Déchargement des données de la table `etudiant`
 --
 
-INSERT INTO `etudiant` (`idEt`, `NomEt`, `PrenomEt`, `Password`, `email`) VALUES
-('khady.diop', 'Diop', 'Khady', '482f7629a2511d23ef4e958b13a5ba54bdba06f2', 'khady.diop@esp.sn'),
-('3336', 'Fall', 'Astou', 'da39a3ee5e6b4b0d3255bfef95601890afd80709', 'fall.astou@esp.sn'),
-('moustapha.diop', 'Diop', 'Moustapha', '482f7629a2511d23ef4e958b13a5ba54bdba06f2', 'moustapha.diop@esp.sn');
+INSERT INTO `etudiant` (`idEt`, `NomEt`, `PrenomEt`, `Password`, `email`, `Classe`) VALUES
+('khady.diop', 'Diop', 'Khady', '482f7629a2511d23ef4e958b13a5ba54bdba06f2', 'khady.diop@esp.sn', 'Licence Informatique A'),
+('3336', 'Fall', 'Astou', 'da39a3ee5e6b4b0d3255bfef95601890afd80709', 'fall.astou@esp.sn', 'Licence Informatique B'),
+('moustapha.diop', 'Diop', 'Moustapha', '482f7629a2511d23ef4e958b13a5ba54bdba06f2', 'moustapha.diop@esp.sn', 'Master1 Informatique A');
 
 -- --------------------------------------------------------
 

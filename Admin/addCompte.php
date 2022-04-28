@@ -28,29 +28,6 @@ session_start();
   <script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="../assets/lib/jquery/jquery.min.js"></script>
-  <style>
-     #output{
-    width: 500px;
-    /* position: absolute; */
-    background:gray;
-    border-radius: 10px;
-     /* position: relative; */
-    /*top: 50%;
-    left: 50%;
-    bottom: 50%;
-    right: 50%;*/
-    /* transform: translate(-50%, -50%); */
-    /* z-index: 9999; */
-    /* padding-left: 10px; */
-    /* text-align: center; */
-      visibility:visible;
-      color:white;
-      margin-top:auto;
-      margin-left:auto;
-      margin-right:auto;
-      margin-bottom:auto;
-    }
-  </style>
 
 </head>
 <body class="dark-edition">
@@ -125,62 +102,76 @@ session_start();
 <!-- **********************LOGIN FORM******************** -->
 <?php
     function form(){
+        include '../Connexion.php';
+        AfficherForm();  
 ?>
-    <div id="contact">
-      <div class="container" id="g">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2">
-<?php 
-              if(isset($_GET['dec'])){
-                echo "<div class='alert alert-success' role='alert'>".$_GET['dec']."</div>";
-              } 
-              if(isset($_GET['erreur'])){
-                echo "<div class='alert alert-danger' role='alert'>".$_GET['erreur']." </div>";
-              }
-              if(isset($_GET['change'])){
-                echo "<div class='alert alert-success' role='alert'>".$_GET['change']." </div>";
-              }
-              if (isset($_GET['err'])) {
-                echo "<div class='alert alert-danger' role='alert'>Vous devez d'abord vous connecte </div>";
-              }          
-?>
-</div>
-          <div style="margin-top:20%; margin-left: 10%;">
-              <div class="content">
+              <div style="margin-top:10%;">
+                <div class="content ">
                 <div class="container-fluid">
                   <div class="row">
                     <div class="col-md-10">
 <!--card  -->
-                        <div class="logo" style='text-align:center'><a href="../index.php">
-                            <img src="../assets/img/logoESP.jpg"  class=" logo-tim">
-                            </a><br><h4 style='color:white;'></h4></div>
+                    <div>
+                      <?php
+                        // if(isset($_GET['dec'])){
+                        //   echo "<div class='alert alert-success' role='alert'>".$_GET['dec']."</div>";
+                        // } 
+                        // if(isset($_GET['erreur'])){
+                        //   echo "<div class='alert alert-danger' role='alert'>".$_GET['erreur']." </div>";
+                        // }
+                        // if(isset($_GET['change'])){
+                        //   echo "<div class='alert alert-success' role='alert'>".$_GET['change']." </div>";
+                        // }
+                        // if (isset($_GET['err'])) {
+                        //   echo "<div class='alert alert-danger' role='alert'>Vous devez d'abord vous connecte </div>";
+                        // }        
+                      ?>
+                    </div>
                       <div class="card">
-                            <div class="card-header card-header-primary">
-                                  <h4 class="card-title">Login Form</h4>
-                                  <p class="card-category">Complete your profile</p>
+                        <div class="card-header card-header-primary">
+                          <h4 class="card-title">Ajouter un nouveau utilisateur</h4>
+                          <p class="card-category" id='retour'>Complete  profile</p>
+                        </div>
+                            <div class="card-body">
+                              <form  method="POST" id="myform">
+                                <div class="opt-group"><p>Choisir le profil du compte</p>
+                                    Profil:
+                                    <select name="profil">
+                                    <option>Professeur</option>
+                                    <option>Etudiant</option>
+                                    <option>Surveillant</option>
+                                    </select>
                                 </div>
-                              <div class='card-body'>
-                                <form  method="POST" id="myform">
-                                  <div class="form-group">
-                                  <label class="bmd-label-floating">Login:</label><input type="text" name="login" class="form-control" id="myLog" placeholder="Your Login">
-                                    <span id="myerror"></span><br>
-                                  </div>
-                                  <div class="form-group">
-                                  <label class="bmd-label-floating">Password:</label><input type="password" name="mdp" class="form-control rounded-right"  id="mdp" placeholder="Your password"> 
-                                    <span id="mdperror"></span><br>              
-                                  </div>
-                                  <div class="form-send">
-                                  <button type="submit" id='hide' class="btn btn-primary pull-right">Connexion</button>
-                                  </div>
-                                </form>   
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Nom:</label>
+                                    <input class="form-control" type="text" name="nom">
+                                </div>
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Prenom:</label>
+                                    <input class="form-control" type="text" name="prenom">
+                                </div>
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Login:</label>
+                                    <input class="form-control" type="text" name="login"  id="myLogin">
+                                <span id="error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="bmd-label-floating">Password:</label>
+                                    <input class="form-control rounded-right " type="password " name="mdp">
+                                </div>
+                                <div class="form-send">
+                                    <button type="submit" id='hide' class="btn btn-primary pull-right">Creer</button>
+                                </div>
+                              </form>
+                            </div>  
+                        </div> 
+                      </div>
 <!-- end card -->
+                    </div>
+                  </div>
                 </div>
               </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+            
   <script type="text/javascript">
         var myform = document.getElementById('myform');
         myform.addEventListener('submit',function (e) {
@@ -212,23 +203,7 @@ session_start();
 
 
 <?php }
-                function VerifierIdentite($login,$password)
-                {
-                  include '../Connexion.php';
-                  require_once "../function.php";
-                   
-                  $req="Select * from etudiant where  idEt ='".$login."' and Password= sha1('".$password."')";
-                  $tab=mysqli_fetch_all(Insertion($con,$req),MYSQLI_ASSOC);
-                  if (!empty($tab))
-                  {
-                    $_SESSION['login']=$login;
-                       AfficherForm();                      
-                  }
-                  else{
-                    $erreur="Login ou Password incorrect";
-                     header("Location:index.php?erreur=$erreur");
-                  }
-                }
+
     function AfficherForm(){
 ?>
     <div class="wrapper ">
@@ -248,36 +223,35 @@ session_start();
               <i class="material-icons">person</i>
 <?php  
               include '../Connexion.php';      
-              $reqq="Select * from etudiant where  idEt='".$_SESSION['login']."'";
+              $reqq="Select * from Admin where  idAdmin='".$_SESSION['login']."'";
               $tab=mysqli_fetch_all(mysqli_query($con,$reqq),MYSQLI_ASSOC);
               foreach ($tab as $ligne){
-                $nom=$ligne['NomEt'];
-               $prenom=$ligne['PrenomEt'];
+                $nom=$ligne['idAdmin'];
              }
-            echo "<p>$prenom $nom</p>";
+            echo "<p>$nom</p>";
 ?>
             </a>
           </li>
-          <li class="nav-item active  ">
-            <a class="nav-link" href="./index.html">
+          <li class="nav-item   ">
+            <a class="nav-link" href="#">
               <i class="material-icons">dashboard</i>
               <p>Acceuil</p>
             </a>
           </li>
           
-          <li class="nav-item ">
-            <a class="nav-link" href="./tables.html">
+          <li class="nav-item active">
+            <a class="nav-link" href="addCompte.php">
               <i class="material-icons">content_paste</i>
-              <p>Too</p>
+              <p>Creer Compte</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="../Deconnexion/MedDisconnect.php">
+            <a class="nav-link" href="gestCompte.php">
               <i class="material-icons">library_books</i>
-              <p>Se deconnecter</p>
+              <p>Comptes</p>
             </a>
           </li>
-          <li class="nav-item ">
+          <!-- <li class="nav-item ">
             <a class="nav-link" href="./icons.html">
               <i class="material-icons">bubble_chart</i>
               <p>Icons</p>
@@ -288,11 +262,11 @@ session_start();
               <i class="material-icons">location_ons</i>
               <p>Maps</p>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item ">
-            <a class="nav-link" href="./notifications.html">
-              <i class="material-icons">notifications</i>
-              <p>Notifications</p>
+            <a class="nav-link" href="../Deconnexion/MedDisconnect.php">
+              <i class="material-icons"></i>
+              <p>Se deconnecter</p>
             </a>
           </li>
           <!-- <li class="nav-item active-pro ">
@@ -309,7 +283,7 @@ session_start();
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+            <a class="navbar-brand" href="javascript:void(0)"></a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
             <span class="sr-only">Toggle navigation</span>
@@ -318,15 +292,6 @@ session_start();
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
-            <form class="navbar-form">
-              <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-default btn-round btn-just-icon">
-                  <i class="material-icons">search</i>
-                  <div class="ripple-container"></div>
-                </button>
-              </div>
-            </form>
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="javascript:void(0)">
@@ -372,59 +337,109 @@ session_start();
      
         <object data="../img/svg/hello_re_3evm.svg" width="300" height="300" > </object>
 <?php
-           // AFFICHER EDT
-        include '../Connexion.php';
+    }
+    // ***********END AFFICHERFORM
+      include "../Connexion.php";
 
-        $reqCons="SELECT  * FROM EDT e,cours c,Etudiant  et where et.idEt ='".$_SESSION['login']."' and et.Classe=e.classe and e.id_Cours=c.idCours order by jour";
-          $tab=mysqli_fetch_all(Insertion($con,$reqCons),MYSQLI_ASSOC);
-          $nbVis=count($tab);
-          $chaine="<div class='card-body table-responsive'>
-            <table class='table table-condensed table-hover' style='margin-top: 50px;'>
-              <form name='form'><tr><thead class='text-warning'><th>Jour</th><th>Cours</th><th>Salle</th><th>HeureDebut</th><th>HeureFin</th></thead></tr>";
-           foreach($tab as $ligne){
-            $salle=$ligne['salle'];
-            $HeureDebt=$ligne['HeureDebut'];
-            $HeureFin=$ligne['HeureFin'];
-            $Jour=$ligne['JOUR'];
-            $cours=$ligne['libelle'];
-            $chaine=$chaine."<tr><td>$Jour</td><td>$cours</td><td>$salle</td><td>$HeureDebt</td><td>$HeureFin</td>
-                  </tr>";
+       function Insertion($con,$req)
+        {
+            if (mysqli_query($con,$req)) {
+              $success= "Utilisateur ajoute dans la base ";?>
+              <script>
+                document.getElementById('retour').innerHTML ="Utilisateur ajoute dans la base";
+                document.getElementById('retour').style.color="blue";
+              </script>
+              <?php
+              // echo "$success <br>";
+              //  header("Location:addCompte.php?success=$success");
+             }
+            else 
+            {
+              $erreur="Echec de l'insertion veuillez remplir correctement les champs";?>
+               <script>
+                document.getElementById('retour').innerHTML ="Echec de l'insertion veuillez remplir correctement les champs";
+                document.getElementById('retour').style.color="red";
+              </script>
+           <?php 
+            // echo "$erreur <br>";
+            // header("Location:addCompte.php?erreur=$erreur");
            }
-          //  ******AFFICHE EDT**************
-           $chaine=$chaine."</table></div>";
+        }
+        //***********CREATION COMPTE
 
-     
+         function Add(){
+          include "../Connexion.php";
+          $nom=$_POST['nom'];
+          $prenom=$_POST['prenom'];    
+          $profil=$_POST['profil'];
+          $login=$_POST['login'];
+          $mdp=$_POST['mdp'];
+          $email=$login."@esp.sn";
+          // if ($login=="Professeur") {
+          //   $n="nomProf";
+          //   $p="prenomProf";
+          //   $id="idProf";
+          // }
+          // else if("Etudiant"){
+          //   $n="nomEt";
+          //   $p="prenomEt";
+          //   $id="idProf";
+          // }
+          // else{
+          //   $n="nomSu";
+          //   $p="prenomSu";
+          //   $id="idProf";
+          // }
+          $req="INSERT INTO $profil values('".$login."','".$nom."','".$prenom."',sha1('".$mdp."'),'".$email."')";
+          Insertion($con,$req);
+        }
+
+        //***********CREATION COMPTE
+
+
+
+          
+// *********COURS DU JOUR***********            
         
-              echo "
-                      <br>
-                      <br>
-                      <div class='card'>
-                            <div class='card-header card-header-primary'>
-                              <h4 class='card-title'>Emploi du temps</h4>
-                            </div>
-                            $chaine
-                      </div>
-                  ";
+            //   echo "
+            //           <br>
+            //           <br>
+            //           <div class='card'>
+            //                 <div class='card-header card-header-primary'>
+            //                   <h4 class='card-title'>Emploie du temps</h4>
+            //                 </div>
+            //                 $chaine
+            //           </div>
+            //           <div id='output'>
+
+            //           </div>
+            //           <div class='card' style='margin-top: 100px;'>
+            //                 <div class='card-header card-header-tabs card-header-warning '>
+            //                   <h4 class='card-title'>Cours du jour</h4>
+            //                 </div>
+            //                 $courJ
+            //           </div>
+            //       ";
         
 ?>
 
-<?php }
-    if(!isset($_POST['login'])){
-      form();
+<?php
+     if(!isset($_SESSION['login']))
+    {
+     header("Location:index.php");
     }
-    else{
-      $login=$_POST['login'];
-      $mdp=$_POST['mdp'];
-       VerifierIdentite($login,$mdp);
-      // AfficherForm();
+    else
+    {
+      form();
+      if (isset($_POST['login'])) {
+       add();
+      }
     }
 ?>
 
   
 <!-- **********************LOGIN FORM******************** -->
 
-  </body>
-</html>
 
 
 

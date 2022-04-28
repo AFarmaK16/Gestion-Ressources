@@ -59,13 +59,13 @@
           </li>
           
           <li class="nav-item ">
-            <a class="nav-link" href="./tables.html">
+            <a class="nav-link" href="./Etudiant/index.php">
               <i class="material-icons">content_paste</i>
               <p>Etudiant</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="../Deconnexion/MedDisconnect.php">
+            <a class="nav-link" href="./Surveillant/index.php">
               <i class="material-icons">library_books</i>
               <p>Surveillant</p>
             </a>
@@ -142,35 +142,31 @@
       <!-- End Navbar -->
 
       <?php
-        function AffichEDT($jour,$classe){
+        function AffichEDT($chaine,$classe){
                 include 'Connexion.php';
-                // include "../function.php";
 
-        $reqCons="SELECT  * FROM edt,cours where classe='".$classe."' and jour='".$jour."' and edt.id_Cours=cours.idCours";
-        $tab=mysqli_fetch_all(mysqli_query($con,$reqCons),MYSQLI_ASSOC);
-        // $chaine="<div class='card-body table-responsive'>
-        //   <table class='table table-condensed table-hover' style='margin-top: 50px;'>
-        //     <form name='form'><tr><thead class='text-warning'><th>Jour</th><th>Cours</th><th>Salle</th><th>Classe</th><th>HeureDebut</th><th>HeureFin</th></thead></tr>";
-        //     $i=0;
-
-        $row="<th rowspan='".(count($tab)+1)."'>$jour</th>";
-        // if (count($tab)==0) {
-        //   $row=$row."<td>ttt</td>";
-        // }
-         foreach($tab as $ligne)
-         {
-          //  echo count($tab)."hiiiii";
-          $salle=$ligne['salle'];
-          $HeureDebt=$ligne['HeureDebut'];
-          $HeureFin=$ligne['HeureFin'];
-          $Jour=$ligne['JOUR'];
-          $cours=$ligne['libelle'];
-          $row=$row."<tr><td>$cours</td><td>$salle</td><td>$HeureDebt</td><td>$HeureFin</td></tr>";
-         }
-        
-        //  ******AFFICHE EDT**************
-         $row=$row."</tr>";
-         return $row;
+                $tabJ=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+                for ($i=0; $i < 6; $i++) { 
+                  $reqCons="SELECT  * FROM edt,cours where classe='".$classe."' and jour='".$tabJ[$i]."' and edt.id_Cours=cours.idCours";
+                  $tab=mysqli_fetch_all(mysqli_query($con,$reqCons),MYSQLI_ASSOC);
+                  $linecollapsed=count($tab);
+                  if (count($tab)==0) {
+                    $linecollapsed=1;
+                  }
+                  $chaine=$chaine."<tr><th rowspan='".$linecollapsed."'>$tabJ[$i]</th>";
+                  foreach($tab as $ligne)
+                  {
+                    $salle=$ligne['salle'];
+                    $HeureDebt=$ligne['HeureDebut'];
+                    $HeureFin=$ligne['HeureFin'];
+                    $Jour=$ligne['JOUR'];
+                    $cours=$ligne['libelle'];
+                    $chaine=$chaine."<td>$cours</td><td>$salle</td><td>$HeureDebt</td><td>$HeureFin</td></tr>";
+                  }
+                }
+                  //  ******AFFICHE EDT**************
+                  $chaine=$chaine."</table></div>";
+                  return $chaine;
       }
       function RecupJour(){
         include 'Connexion.php';
@@ -181,24 +177,17 @@
         $tab=mysqli_fetch_all(mysqli_query($con,$reqCons),MYSQLI_ASSOC);
         // print_r($tab);
          foreach($tab as $ligne){
-          // echo "<br><div style='color:red'>".$ligne['classe']."</div>";
-          $chaine=$chaine."<tr><td colspan='6'>
-            <div class='card'>
-            <div class='card-header card-header-rose'>
-              <h4 class='card-title' style='color:white'>".$ligne['classe']."</h4>
-            </div>
-            </td></tr>
-        <tr><thead><th>Jour</th><th>Cours</th><th>Salle</th><th>HeureDebut</th><th>HeureFin</th></thead></tr>";
-          
-          $tabJ=['Monday','Tuesday','Wednesday','Thursday','Saturday'];
-          for ($i=0; $i < 5; $i++) { 
-            $chaine="<tr>".$chaine.AffichEDT($tabJ[$i],$ligne['classe'])."</tr>";
-          }
-          // echo"<br><br><div style='background-color:red'><br><br></div>";
-          $chaine=$chaine."<tr><td colspan='6'></td></tr><tr><td colspan='6'></td></tr><tr><td colspan='6'></td></tr>";
-         }
-         $chaine=$chaine."</table></div></div>";
-         echo $chaine;
+        
+          $chaine="<div class='card-body table-responsive'>
+          <div class='card'>
+              <div class='card-header card-header-rose'>
+                 <h4 class='card-title' style='color:white'>".$ligne['classe']."</h4>
+               </div>
+                <table class='table table-condensed table-hover' style='margin-top: 50px;'>
+               <tr><thead><th>Jour</th><th>Cours</th><th>Salle</th><th>HeureDebut</th><th>HeureFin</th></thead></tr>";
+               echo AffichEDT($chaine,$ligne['classe']);
+              }
+        
       }
 RecupJour();
       ?>

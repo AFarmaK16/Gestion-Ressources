@@ -328,13 +328,21 @@ session_start();
            // AFFICHER EDT
         include '../Connexion.php';
 
-        $reqCons="SELECT  * FROM EDT,cours where id_Prof='".$_SESSION['login']."' and EDT.id_Cours=cours.idCours order by jour";
+        $chaine="<div class='card-body table-responsive'>
+        <table class='table table-condensed table-hover' style='margin-top: 50px;'>
+          <form name='form'><tr><thead class='text-warning'><th>Jour</th><th>Cours</th><th>Salle</th><th>Classe</th><th>HeureDebut</th><th>HeureFin</th><th>Avancement</th></thead></tr>";
+       
+        $tabJ=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        for ($i=0; $i < 6; $i++) { 
+        $reqCons="SELECT  * FROM EDT,cours where id_Prof='".$_SESSION['login']."' and EDT.id_Cours=cours.idCours and jour='".$tabJ[$i]."' order by jour";
           $tab=mysqli_fetch_all(Insertion($con,$reqCons),MYSQLI_ASSOC);
           $nbVis=count($tab);
-          $chaine="<div class='card-body table-responsive'>
-            <table class='table table-condensed table-hover' style='margin-top: 50px;'>
-              <form name='form'><tr><thead class='text-warning'><th>Jour</th><th>Cours</th><th>Salle</th><th>Classe</th><th>HeureDebut</th><th>HeureFin</th><th>Avancement</th></thead></tr>";
-           foreach($tab as $ligne){
+          $linecollapsed=count($tab);
+          if (count($tab)==0) {
+            $linecollapsed=1;
+          }
+          $chaine=$chaine."<tr><th rowspan='".$linecollapsed."'>$tabJ[$i]</th>";
+              foreach($tab as $ligne){
             $salle=$ligne['salle'];
             $classe=$ligne['classe'];
             $HeureDebt=$ligne['HeureDebut'];
@@ -343,7 +351,7 @@ session_start();
             $cours=$ligne['libelle'];
             $nbPointage=$ligne['nbPointage'];
             $creneau=$ligne['creneau'];
-            $chaine=$chaine."<tr><td>$Jour</td><td>$cours</td><td>$salle</td><td>$classe</td><td>$HeureDebt</td><td>$HeureFin</td>
+            $chaine=$chaine."<td>$cours</td><td>$salle</td><td>$classe</td><td>$HeureDebt</td><td>$HeureFin</td>
                     <td>
                     <div class='d-flex align-items-center justify-content-center'>
                           <div>
@@ -355,6 +363,7 @@ session_start();
                         </div>
                     </td></tr>";
            }
+          }
           //  ******AFFICHE EDT**************
            $chaine=$chaine."</table></div>";
 
